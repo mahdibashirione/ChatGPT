@@ -87,7 +87,7 @@ function App() {
 
   return (
     <div className='w-full bg-zinc-800'>
-      <div className="w-full h-[100dvh] mx-auto flex flex-col justify-between">
+      <div className="w-full h-screen mx-auto flex flex-col justify-between">
         {/* Header */}
         <header className='w-full bg-zinc-800'>
           <div className="mx-auto max-w-[700px] w-full text-white flex items-center justify-between py-3 px-4">
