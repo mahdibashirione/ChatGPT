@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { toast, Toaster } from 'react-hot-toast';
 
-const API_KEY = "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";
+const API_KEY = "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";
 
 const systemMessage = {
   "role": "system",
@@ -100,12 +100,10 @@ function App() {
           <div className='mx-auto w-full max-w-[700px] max-h-full scrollbar-none overflow-y-auto flex-col flex px-3 py-4'>
             {messages.length ? messages.map((message, i) => {
               return (
-                <div className={`w-full flex mt-2 ${message.direction === "outgoing" ? "justify-end" : "justify-start"
-                  }`}>
-                  <p className={`
-              ${message.direction === "outgoing" ? "bg-blue-500 before:bg-blue-500 before:-right-0.5 text-white" : "bg-zinc-800 text-gray-400 before:-left-0.5 before:bg-zinc-800"} 
-              before:content-[""] before:bottom-2 before:w-4 before:h-4 before:absolute before:rotate-45 before:-z-10
-              max-w-[85%] px-3 py-2 text leading-7 rounded-xl relative z-10`}>{message.message}</p>
+                <div key={i} className={`w-full flex mt-2 ${message.direction === "outgoing" ? "justify-end" : "justify-start"}`}>
+                  <p className={` ${message.direction === "outgoing" ? "bg-blue-500 before:bg-blue-500 before:-right-0.5 text-white" : "bg-zinc-800 text-gray-400 before:-left-0.5 before:bg-zinc-800"} 
+                    before:content-[""] before:bottom-2 before:w-4 before:h-4 before:absolute before:rotate-45 before:-z-10
+                    max-w-[85%] px-3 py-2 text leading-7 rounded-xl relative z-10`}>{message.message}</p>
                 </div>
               )
             }) : <div className='select-none w-full h-full text-white flex flex-col items-center justify-center'>
@@ -138,14 +136,14 @@ function App() {
               ref={input}
               className='px-4 text-white bg-transparent py-23 outline-none border-[#cbcbcb] flex-1 rounded-lg'
               placeholder='Message...' type={"text"} />
-            <button onClick={e => {
+            <span onClick={e => {
               handleSend(input.current.value)
               input.current.value = ""
-            }} className='w-12 h-12 p-1 flex items-center justify-center active:scale-95 duration-200 rounded-lg'>
+            }} className='cursor-pointer w-12 h-12 p-1 flex items-center justify-center active:scale-90 duration-200 rounded-lg'>
               <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M43.4885 22.688C43.477 24.1167 42.6869 25.3307 42.0394 26.1389C41.3166 27.0409 40.3538 27.9421 39.2925 28.8001C37.1585 30.5255 34.3386 32.3064 31.4291 33.8252C28.5232 35.3419 25.4077 36.66 22.6644 37.3986C21.2975 37.7666 19.9292 38.0167 18.6749 38.0389C17.4764 38.0602 16.0318 37.8809 14.8362 37.0303L14.8297 37.0257C14.6053 36.865 14.4105 36.6844 14.3419 36.6207L14.3288 36.6086C13.6336 35.9677 13.2923 35.1553 13.11 34.55C12.9151 33.9028 12.8186 33.2091 12.7793 32.5438C12.7005 31.2101 12.8356 29.6983 13.1344 28.2793C13.2981 27.5018 13.5228 26.6956 13.8187 25.9244C14.2575 24.7805 15.3719 24.0966 16.5886 23.9462L23.6357 23.3694C23.9965 23.3399 24.2736 23.0387 24.273 22.6767C24.2725 22.3146 23.9945 22.0126 23.6337 21.982L16.5848 21.3842C15.291 21.2205 14.1082 20.4757 13.6706 19.2463C13.3908 18.4602 13.1821 17.6413 13.0356 16.8491C12.7588 15.3532 12.6658 13.7478 12.8312 12.3367C12.9138 11.6327 13.0707 10.8886 13.3582 10.2013C13.6359 9.53715 14.1252 8.71413 15.0006 8.15391L15.002 8.15298C16.1975 7.38815 17.6188 7.25731 18.7956 7.3036C20.0348 7.35234 21.391 7.6156 22.7529 7.99252C25.4855 8.74882 28.5907 10.0618 31.4896 11.5684C34.3901 13.0758 37.2021 14.8384 39.3271 16.5502C40.3835 17.4011 41.3446 18.2988 42.0645 19.2025C42.711 20.0139 43.5002 21.2414 43.4885 22.688Z" fill="#0EA5E9" />
               </svg>
-            </button>
+            </span>
           </div>
         </footer>
         <Toaster
