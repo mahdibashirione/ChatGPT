@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { toast, Toaster } from 'react-hot-toast';
 
-const API_KEY = "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";
+const API_KEY = "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";
 
 const systemMessage = {
   "role": "system",
@@ -72,7 +72,6 @@ function App() {
         }).then((data) => {
           return data.json();
         }).then((data) => {
-          console.log("data", data);
           setMessages([...chatMessages, {
             message: data.choices[0].message.content,
             direction: 'incoming',
@@ -81,7 +80,6 @@ function App() {
           setIsTyping(false);
         });
     } catch (error) {
-      console.log("error", error);
       notifyError("سرور جوابگو نیست")
       setIsTyping(false);
     }
