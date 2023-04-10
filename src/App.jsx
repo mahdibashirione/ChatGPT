@@ -25,7 +25,7 @@ function App() {
 
     if (input.current.value === "") {
       notifyError("لطفا متن خود را وارد کنید")
-      return
+      return;
     }
 
     const newMessage = {
@@ -72,6 +72,7 @@ function App() {
         }).then((data) => {
           return data.json();
         }).then((data) => {
+          console.log("data", data);
           setMessages([...chatMessages, {
             message: data.choices[0].message.content,
             direction: 'incoming',
@@ -80,6 +81,7 @@ function App() {
           setIsTyping(false);
         });
     } catch (error) {
+      console.log("error", error);
       notifyError("سرور جوابگو نیست")
       setIsTyping(false);
     }
