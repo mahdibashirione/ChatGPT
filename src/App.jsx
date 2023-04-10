@@ -6,6 +6,7 @@ import Welcomeview from './components/WelcomeView';
 import Message from './components/message';
 import IsTypingView from './components/isTypingView';
 import MessageList from './components/MessageList';
+import axios from 'axios';
 
 const API_KEY = ""
 const initialChats = JSON.parse(localStorage.getItem("Chats")) || []
@@ -23,7 +24,6 @@ function App() {
 
     return time;
   }
-
 
   useEffect(() => {
     localStorage.setItem("Chats", JSON.stringify(messages))
@@ -47,8 +47,9 @@ function App() {
 
   const handleSend = async (message) => {
 
+
     if (message === "") {
-      notifyError("لطفا متن خود را وارد کنید")
+      notifyError("Please enter your text")
       return;
     }
 
@@ -86,19 +87,17 @@ function App() {
     }
 
     try {
-      await fetch("https://api.openai.com/v1/chat/completions",
+      await axios.post("https://api.openai.com/v1/chat/completions",
+        JSON.stringify(apiRequestBody),
         {
-          method: "POST",
           headers: {
             "Authorization": "Bearer " + API_KEY,
             "Content-Type": "application/json"
           },
-          body: JSON.stringify(apiRequestBody)
-        }).then((data) => {
-          return data.json();
-        }).then((data) => {
+        }).then(res => {
+          navigator.vibrate(200)
           setMessages([...chatMessages, {
-            message: data.choices[0].message.content,
+            message: res.data.choices[0].message.content,
             direction: 'incoming',
             sendTime: getDateSendChat(),
             sender: "ChatGPT"
@@ -106,7 +105,7 @@ function App() {
           setIsTyping(false);
         });
     } catch (error) {
-      notifyError("سرور جوابگو نیست")
+      notifyError("Connection failed")
       setIsTyping(false);
     }
   }
@@ -114,12 +113,12 @@ function App() {
   const handleDeleteAllChats = () => {
 
     if (messages.length == 0) {
-      notifyError("مکالمه ای وجود ندارد")
+      notifyError("There is no chat")
       return
     }
 
     setMessages([])
-    notifySuccess("همه مکالمه ها حذف شد")
+    notifySuccess("Chats are deleted")
   }
 
   return (
