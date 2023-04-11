@@ -6,9 +6,9 @@ const IsTypingView = () => {
           max-w-[85%] px-3 py-2 text text-gray-400 leading-7 rounded-xl relative z-10'>
         is Typing
         <div className="flex ml-1 pb-1 gap-1">
-          <span className="w-2 h-2 bg-zinc-900 rounded-full animate-bounce"></span>
-          <span className="w-2 h-2 bg-zinc-900 rounded-full animate-bounce"></span>
-          <span className="w-2 h-2 bg-zinc-900 rounded-full animate-bounce"></span>
+          <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
+          <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
+          <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
         </div>
       </p>
     </div>

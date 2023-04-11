@@ -8,10 +8,12 @@ import IsTypingView from './components/isTypingView';
 import MessageList from './components/MessageList';
 import axios from 'axios';
 
-const API_KEY = ""
+const API_KEY = import.meta.env.VITE_API_KEY;
 const initialChats = JSON.parse(localStorage.getItem("Chats")) || []
 
 function App() {
+
+  console.log(API_KEY);
   const [messages, setMessages] = useState(initialChats);
   const [isTyping, setIsTyping] = useState(false);
 
