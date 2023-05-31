@@ -1,7 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useRef, useState } from "react";
-import { FiMoreVertical, FiRotateCcw, FiTrash2 } from "react-icons/fi"
-
+import { FiMoreVertical, FiRotateCcw, FiTrash2 } from "react-icons/fi";
 
 const DropDown = ({ onDeleteChats }) => {
   return (
@@ -20,15 +19,21 @@ const DropDown = ({ onDeleteChats }) => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-4 mt-2 overflow-hidden w-44 origin-top-right divide-y divide-zinc-900 rounded-md bg-zinc-800 shadow shadow-zinc-950 ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-4 mt-2 overflow-hidden w-44 origin-top-right divide-y divide rounded-md bg-white shadow shadow-zinc-400 ring-opacity-5 focus:outline-none">
           <Menu.Item>
-            <div onClick={e => location.reload()} className="px-4 py-3 hover:bg-zinc-700 text-blue-500 cursor-pointer flex items-center gap-x-2">
+            <div
+              onClick={(e) => location.reload()}
+              className="px-4 py-3 hover:bg-gray-200 text-blue-500 cursor-pointer flex items-center gap-x-2"
+            >
               <span>Refresh</span>
               <FiRotateCcw />
             </div>
           </Menu.Item>
           <Menu.Item>
-            <div onClick={onDeleteChats} className="px-4 py-3 hover:bg-zinc-700 text-red-500 cursor-pointer flex items-center gap-x-2">
+            <div
+              onClick={onDeleteChats}
+              className="px-4 py-3 hover:bg-gray-200 text-red-500 cursor-pointer flex items-center gap-x-2"
+            >
               <span>Delete All Chats</span>
               <FiTrash2 />
             </div>
