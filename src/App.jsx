@@ -7,6 +7,7 @@ import Message from "./components/message";
 import IsTypingView from "./components/isTypingView";
 import MessageList from "./components/MessageList";
 import axios from "axios";
+import useToast from "./hooks/useToast";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 const initialChats = JSON.parse(localStorage.getItem("Chats")) || [];
@@ -14,7 +15,11 @@ const initialChats = JSON.parse(localStorage.getItem("Chats")) || [];
 function App() {
   const [messages, setMessages] = useState(initialChats);
   const [isTyping, setIsTyping] = useState(false);
+  const { error, success } = useToast();
 
+  useEffect(() => {
+    localStorage.setItem("Chats", JSON.stringify(messages));
+  }, [messages]);
   function getDateSendChat() {
     let today = new Date().toLocaleDateString("fa-IR");
 
@@ -24,36 +29,14 @@ function App() {
 
     return time;
   }
-
-  useEffect(() => {
-    localStorage.setItem("Chats", JSON.stringify(messages));
-  }, [messages]);
-
-  const notifyError = (message) =>
-    toast.error(message, {
-      style: {
-        borderRadius: "10px",
-        background: "#333",
-        color: "#fff",
-      },
-    });
-
-  const notifySuccess = (message) =>
-    toast.success(message, {
-      style: {
-        borderRadius: "10px",
-        background: "#333",
-        color: "#fff",
-      },
-    });
-
   const handleSend = async (message) => {
     if (message === "") {
-      notifyError("Please enter your text");
+      error("Please enter your text");
       return;
     }
 
     const newMessage = {
+      id: Math.floor(Math.random() * 100),
       message,
       direction: "outgoing",
       sendTime: getDateSendChat(),
@@ -66,7 +49,6 @@ function App() {
     setIsTyping(true);
     await processMessageToChatGPT(newMessages);
   };
-
   async function processMessageToChatGPT(chatMessages) {
     // messages is an array of messages
 
@@ -111,19 +93,22 @@ function App() {
           setIsTyping(false);
         });
     } catch (error) {
-      notifyError("Connection failed");
+      error("Connection failed");
       setIsTyping(false);
     }
   }
-
   const handleDeleteAllChats = () => {
     if (messages.length == 0) {
-      notifyError("There is no chat");
+      error("There is no chat");
       return;
     }
 
     setMessages([]);
-    notifySuccess("Chats are deleted");
+    success("Chats are deleted");
+  };
+  const handleDeleteMessage = (id) => {
+    const messagesFilter = messages.filter((message) => message.id !== id);
+    setMessages(messagesFilter);
   };
 
   return (
@@ -133,8 +118,14 @@ function App() {
         <MessageList>
           {/* Messages */}
           {messages.length ? (
-            messages.map((message, i) => {
-              return <Message key={i} message={message} />;
+            messages.map((message) => {
+              return (
+                <Message
+                  key={message.id}
+                  message={message}
+                  deleteMessage={handleDeleteMessage}
+                />
+              );
             })
           ) : (
             <Welcomeview />
@@ -143,8 +134,8 @@ function App() {
           {isTyping && <IsTypingView />}
         </MessageList>
         <Footer onSend={handleSend} />
-        <Toaster position="top-center" reverseOrder={false} />
       </div>
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 }

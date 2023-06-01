@@ -4,7 +4,7 @@ import { FiMoreVertical, FiRotateCcw, FiTrash2 } from "react-icons/fi";
 
 const DropDown = ({ onDeleteChats }) => {
   return (
-    <Menu as="div" className="relative inline-block text-left z-50">
+    <Menu as="div" className="relative inline-block text-left z-20">
       <div>
         <Menu.Button className="w-10 h-10 flex items-center justify-center">
           <FiMoreVertical className="text-2xl" />
