@@ -36,7 +36,6 @@ function App() {
     }
 
     const newMessage = {
-      id: Math.floor(Math.random() * 100),
       message,
       direction: "outgoing",
       sendTime: getDateSendChat(),
@@ -50,8 +49,6 @@ function App() {
     await processMessageToChatGPT(newMessages);
   };
   async function processMessageToChatGPT(chatMessages) {
-    // messages is an array of messages
-
     let apiMessages = chatMessages.map((messageObject) => {
       let role = "";
       if (messageObject.sender === "ChatGPT") {
@@ -61,40 +58,43 @@ function App() {
       }
       return { role: role, content: messageObject.message };
     });
-
     const apiRequestBody = {
       model: "gpt-3.5-turbo",
       messages: [...apiMessages],
     };
-
     try {
-      await axios
-        .post(
-          "https://api.openai.com/v1/chat/completions",
-          JSON.stringify(apiRequestBody),
-          {
-            headers: {
-              Authorization: "Bearer " + API_KEY,
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((res) => {
-          navigator.vibrate(200);
-          setMessages([
-            ...chatMessages,
-            {
-              message: res.data.choices[0].message.content,
-              direction: "incoming",
-              sendTime: getDateSendChat(),
-              sender: "ChatGPT",
-            },
-          ]);
-          setIsTyping(false);
-        });
-    } catch (error) {
-      error("Connection failed");
+      const { data } = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        JSON.stringify(apiRequestBody),
+        {
+          headers: {
+            Authorization: "Bearer " + API_KEY,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      navigator.vibrate(200);
+      setMessages([
+        ...chatMessages,
+        {
+          message: data.choices[0].message.content,
+          direction: "incoming",
+          sendTime: getDateSendChat(),
+          sender: "ChatGPT",
+        },
+      ]);
       setIsTyping(false);
+    } catch (error) {
+      setIsTyping(false);
+      setMessages([
+        ...chatMessages,
+        {
+          message: "Error:" + error.message,
+          direction: "incoming",
+          sendTime: getDateSendChat(),
+          sender: "ChatGPT",
+        },
+      ]);
     }
   }
   const handleDeleteAllChats = () => {
@@ -106,8 +106,10 @@ function App() {
     setMessages([]);
     success("Chats are deleted");
   };
-  const handleDeleteMessage = (id) => {
-    const messagesFilter = messages.filter((message) => message.id !== id);
+  const handleDeleteMessage = (text) => {
+    const messagesFilter = messages.filter(
+      (message) => message.message !== text
+    );
     setMessages(messagesFilter);
   };
 
@@ -118,10 +120,10 @@ function App() {
         <MessageList>
           {/* Messages */}
           {messages.length ? (
-            messages.map((message) => {
+            messages.map((message, i) => {
               return (
                 <Message
-                  key={message.id}
+                  key={i}
                   message={message}
                   deleteMessage={handleDeleteMessage}
                 />

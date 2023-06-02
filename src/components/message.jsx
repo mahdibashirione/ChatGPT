@@ -19,7 +19,7 @@ const Message = ({ message, deleteMessage }) => {
     success("The text was copied");
   };
   const handleDeletePopUp = () => {
-    deleteMessage(message.id);
+    deleteMessage(message.message);
     setIsPopUpDelete(false);
     success("Your message has been deleted");
   };
@@ -28,9 +28,11 @@ const Message = ({ message, deleteMessage }) => {
   };
 
   return (
-    <div
-      className={`w-full flex flex-col select-none mt-1 ${
-        message.direction === "outgoing" ? "items-end" : "items-start"
+    <li
+      className={`w-full flex flex-col select-none ${
+        message.direction === "outgoing"
+          ? "items-end mt-1.5"
+          : "items-start flex-col-reverse mb-1.5"
       }`}
     >
       <div
@@ -38,9 +40,9 @@ const Message = ({ message, deleteMessage }) => {
         className={` ${
           message.direction === "outgoing"
             ? "bg-blue-500 rounded-br-none text-white"
-            : "bg-white shadow text-slate-800 rounded-tl-none"
-        } cursor-pointer duration-200 active:scale-95 relative max-w-[70%] px-3 py-2.5 text leading-7 rounded-xl  
-    ${isOptions ? "z-30" : "z-10"}`}
+            : "bg-white text-slate-800 rounded-tl-none"
+        } cursor-pointer duration-200 active:scale-95 relative max-w-[70%] px-3 shadow shadow-zinc-400/60 py-2.5 text leading-7 rounded-xl  
+    ${isOptions ? "z-30" : "z-0"}`}
       >
         {message.sender === "ChatGPT" && message.sendTime == time ? (
           <Typewriter
@@ -72,14 +74,14 @@ const Message = ({ message, deleteMessage }) => {
               Copy
             </button>
           </li>
-          {message.direction === "outgoing" && (
+          {/* {message.direction === "outgoing" && (
             <li>
               <button className="bg-white py-2.5 flex pl-4 pr-6  w-full items-center gap-2 hover:bg-gray-200 duration-200">
                 <FiEdit3 className="text-lg" />
                 Edite
               </button>
             </li>
-          )}
+          )} */}
           <li>
             <button
               onClick={(e) => setIsPopUpDelete(true)}
@@ -117,7 +119,7 @@ const Message = ({ message, deleteMessage }) => {
         handleCancel={handleCancelPopUp}
         handleDelete={handleDeletePopUp}
       />
-    </div>
+    </li>
   );
 };
 

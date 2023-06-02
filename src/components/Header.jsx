@@ -2,7 +2,7 @@ import DropDown from "./DropDown";
 
 const Header = ({ onDeleteChats }) => {
   return (
-    <header className="w-full bg-blue-500">
+    <header className="w-full bg-blue-500 backdrop-blur-xl z-10">
       <div className="mx-auto max-w-[700px] w-full text-white flex items-center justify-between py-2 px-4">
         <svg
           className="w-8 h-8 fill-slate-50"
